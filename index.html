@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>HTML5 File API</title>
+    <style>
+		#btn{
+			display:none;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		window.onload = function() { 
+			var input = document.getElementById("images"), formdata = false;
+			if (window.FormData) {
+				formdata = new FormData();
+			}
+			input.addEventListener("change", function (evt) {
+				
+				var file = this.files[0];
+				formdata.append("images[]", file);
+				if (formdata) {
+					$.ajax({
+						url: "upload.php",
+						type: "POST",
+						data: formdata,
+						processData: false,
+						contentType: false,
+						success: function (res) {
+							document.getElementById("response").innerHTML = res; 
+						}
+					});
+				}
+			}, false);
+		}
+	</script>
+</head>
+<body>
+	<div id="main">
+		<h1>Ajax example</h1>
+		<form method="post" enctype="multipart/form-data"  action="upload.php">
+    		<input type="file" name="images" id="images" multiple />
+    		<button type="submit" id="btn">Upload Files!</button>
+    	</form>
+
+  	<div id="response"></div>
+		
+	</div>
+	
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  
+</body>
+</html>
